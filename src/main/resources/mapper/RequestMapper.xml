@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjyc.together.dao.RequestDAO">
+
+<!-- public void save(Integer team_id, Integer user_id) { -->
+<insert id="save">
+INSERT INTO request
+					(team_id,user_id,re_state,position)
+					VALUES (#{team_id},#{user_id},'申请中','队员')
+</insert>
+
+<!-- public void update(Request request) { -->
+<update id="update">
+UPDATE request
+					SET re_state=#{Request.re_state},position=#{Request.position}
+					WHERE team_id=#{Request.team_id} AND user_id=#{Request.user_id}
+</update>
+
+<!-- public List<User> findProposer(Integer team_id) { -->
+<select id="findProposer" resultType="User">
+SELECT `user`.* 
+					FROM `user` LEFT JOIN request ON `user`.id=request.user_id
+					WHERE request.team_id=#{tram_id} AND request.re_state='申请中'
+					AND request.position='队员'
+</select>
+<!-- public Boolean isApplicant(Integer team_id, Integer user_id)  -->
+<select id="isApplicant" resultType="Boolean" >
+<![CDATA[ SELECT request.* 
+					FROM request
+					WHERE request.team_id=#{team_id} AND request.user_id=#{user_id}
+					AND request.re_state='申请中']]>
+</select>
+<!-- public Boolean isJoinTeam(Integer team_id, Integer user_id) { -->
+<select id="isJoinTeam" resultType="Boolean">
+<![CDATA[SELECT request.* 
+					FROM request
+					WHERE request.team_id=#{team_id} AND request.user_id=#{user_id}
+					AND request.re_state='已加入' ]]>
+</select>
+
+<!-- public Request findByTeamAndUser(Integer team_id, Integer user_id) { -->
+<select id="findByTeamAndUser" resultType="Request">
+SELECT request.* 
+					FROM request
+					WHERE request.team_id=#{team_id} AND request.user_id=#{user_id}
+</select>
+</mapper>

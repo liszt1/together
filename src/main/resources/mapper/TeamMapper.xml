@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjyc.together.dao.TeamDAO">
+
+<insert id="save" >
+  <selectKey keyProperty="Team.id" order="AFTER" resultType="Integer">
+            select LAST_INSERT_ID() AS ID
+        </selectKey>
+	INSERT INTO team
+					(team_name,type_id,city,createTime,startTime,endTime,
+					introduction,team_state,current_num,limit_num)
+					VALUES (#{Team.team_name},#{Team.type_id},#{Team.city},
+					now(),#{Team.startTime},#{Team.endTime},#{Team.introduction},
+					'可加入',#{Team.current_num},#{Team.limit_num});
+</insert>
+<insert id="saveRequest" >
+INSERT INTO request
+					(team_id,user_id,re_state,position)
+					VALUES (#{team_id},#{user_id},'已加入','队长');
+</insert>
+
+<select id="findMayJoinTeam" resultType="Team">
+	SELECT team.* FROM team 
+						WHERE team.team_state='可加入'
+</select>
+<select id="findByUserNum" resultType="Team">
+SELECT DISTINCT team.* 
+						FROM team LEFT JOIN request ON team.id=request.team_id 
+						WHERE 
+						request.user_id=
+						(SELECT `user`.id FROM `user` WHERE `user`.num=#{num} AND team.team_state='正在进行中')
+</select>
+<select id="findUserTeam" resultType="Team">
+SELECT DISTINCT team.* 
+						 FROM team LEFT JOIN request ON team.id=
+						 request.team_id WHERE request.user_id=
+						 (SELECT `user`.id FROM `user` WHERE `user`.num=#{num})
+						 AND (team.team_state='可加入' OR team.team_state='满员')
+</select>
+<select id="findByUserNumEnd" resultType="Team">
+SELECT DISTINCT team.* 
+					FROM team LEFT JOIN request ON team.id=
+					request.team_id WHERE request.user_id=
+					(SELECT `user`.id FROM `user` WHERE `user`.num=#{num}
+					AND team.team_state='已结束')
+</select>
+<select id="findById" resultType="Team">
+SELECT team.* FROM team WHERE team.id=#{id}
+</select>
+<select id="findByUserCity" resultType="Team">
+SELECT DISTINCT team.* 
+						FROM team WHERE team.city=#{User.city}
+						AND team.team_state='可加入'
+</select>
+<select id="findByCity" resultType="Team">
+SELECT team.* 
+						FROM team  WHERE team.city=#{city}
+						AND team.team_state='可加入'
+</select>
+<select id="findMyTeam" resultType="Team">
+SELECT DISTINCT team.*
+					FROM team LEFT JOIN request ON request.team_id=team.id
+					WHERE request.user_id=#{user_id} AND request.position='队长'
+</select>
+
+<!-- 
+<select id="findRequestByUserId">
+SELECT DISTINCT request.re_state,team.*
+					FROM team,request
+					WHERE team.id=request.team_id 
+					AND request.user_id=#{user_id}
+</select>
+- -->
+ 
+<select id="findThumbByUserId" resultType="HashMap">
+SELECT DISTINCT thumb.th_state,team.*
+					FROM team,thumb
+					WHERE team.id=thumb.team_id
+					AND thumb.user_id=#{user_id}  
+</select>
+
+
+<select id="findAllTeam" resultType="Team">
+SELECT DISTINCT team.* 
+					FROM team
+</select>
+
+
+
+<update id="update">
+UPDATE team 
+					SET team_name=#{Team.team_name},type_id=#{Team.type_id},
+					city=#{Team.City},startTime=#{Team.startTime},endTime=#{Team.endTime},
+					introduction=#{Team.introduction},team_state=#{Team.team_state},
+					current_num=#{Team.current_num},limit_num=#{Team.limit_num}
+					WHERE id=#{Team.id}
+</update>
+
+
+
+
+
+</mapper>

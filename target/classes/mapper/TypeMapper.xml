@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjyc.together.dao.TypeDAO">
+
+<!-- 	public void save(Type type) { -->
+<insert id="save">
+INSERT INTO type
+				(id,type) 
+				VALUES (#{Type.id},#{Type.type})
+</insert>
+
+<!-- public void update(Type type) { -->
+<update id="update">
+UPDATE type 
+				SET type=#{Type.type} 
+				WHERE id=#{Type.id}
+</update>
+
+<!-- public List<Type> findAllType() { -->
+<select id="findAllType" resultType="Type">
+SELECT type.* FROM type
+</select>
+</mapper>

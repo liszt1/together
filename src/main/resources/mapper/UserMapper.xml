@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zjyc.together.dao.UserDAO">
+
+	<select id="findByNumber"  resultType="User">
+	SELECT user.* FROM user where num = #{num}
+	</select>
+	<select id="findAllByTeamId"  resultType="User">
+	SELECT DISTINCT `user`.id,user_name,icon,sex,user_like,blacklist,
+					height,weight,tel,introduction,place
+					 FROM `user` 
+					 LEFT JOIN request ON `user`.id=request.user_id 
+					 WHERE request.team_id=#{id} AND request.re_state='已加入'
+	</select>
+	<select id="findById" resultType="User">
+	SELECT user.* FROM user where id = #{user_id}
+	</select>
+	
+	<insert  id="save"  parameterType="User" >
+	INSERT INTO user
+					 (user_name,num,user_pw,icon,sex,age,birthday,user_like,
+					 blacklist,height,weight,tel,introduction,money,place)
+					 VALUES (#{User.user_name},#{User.num},#{User.user_pw},#{User.icon},
+					 #{User.sex},#{User.age},#{User.birthday},0,0,#{User.height},#{User.weight},
+					 #{User.tel},#{User.introduction},0,#{User.place})
+	</insert>
+	
+	<!-- 根据用户信息中的用户id,更新用户信息 -->
+	<update id="update"  parameterType="User" > 
+    UPDATE user
+		SET user_name=#{User.user_name},num=#{User.num},user_pw=#{User.user_pw},
+		icon=#{User.icon},sex=#{User.sex},age=#{User.age},birthday=#{User.birthday},user_like=#{User.user_like},
+		blacklist=#{User.blacklist},height=#{User.height},weight=#{User.weight},tel=#{User.tel},
+		introduction=#{User.introduction},money=#{User.money},place=#{User.place}
+		WHERE id=#{User.id}
+	</update>
+	<update id="thumbUser">
+	UPDATE user 
+					SET user_like=user_like+1
+					WHERE id=#{id}
+	</update>
+	
+</mapper>
