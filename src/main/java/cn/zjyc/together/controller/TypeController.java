@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.zjyc.together.entity.Type;
 import cn.zjyc.together.service.AppException;
-import cn.zjyc.together.service.MotionTypeService;
+import cn.zjyc.together.service.TypeService;
 
 /**
  * 
@@ -25,12 +25,12 @@ import cn.zjyc.together.service.MotionTypeService;
  * 注意 : 本内容仅限于浙江农林大学悦动together项目组内部传阅，禁止外泄
  */
 @Controller
-public class MotionTypeController {
+public class TypeController {
 
-	@Resource(name = "motionTypeService")
-	private MotionTypeService mts;
+	@Resource(name = "typeService")
+	private TypeService typeService;
 
-	@RequestMapping("/motionType.do")
+	@RequestMapping("/Type.do")
 	@ResponseBody
 	public Map<String, Object> motionType(HttpServletRequest request, HttpServletResponse response) {
 
@@ -38,7 +38,7 @@ public class MotionTypeController {
 		Map<String, Object> state = new HashMap<String, Object>();
 		List<Type> allType = null;
 		try {
-			allType = mts.findAllType();
+			allType = typeService.findAllType();
 		} catch (Exception e) {
 			if (e instanceof AppException) {
 				// 应用异常，

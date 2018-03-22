@@ -1,14 +1,15 @@
 package cn.zjyc.together.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.zjyc.together.constant.EnumStateAll;
 import cn.zjyc.together.dao.ThumbDAO;
 import cn.zjyc.together.dao.UserDAO;
+import cn.zjyc.together.entity.Team;
 import cn.zjyc.together.entity.Thumb;
 import cn.zjyc.together.entity.User;
 import cn.zjyc.together.service.AppException;
@@ -16,11 +17,9 @@ import cn.zjyc.together.service.ThumbService;
 
 @Service("thumbService")
 public class ThumbServiceImpl implements ThumbService {
-
-	@Resource(name = "userDAO")
+	@Autowired
 	private UserDAO userDAO;
-
-	@Resource(name = "thumbDAO")
+	@Autowired
 	private ThumbDAO thumbDAO;
 
 	public void thumb(Integer team_id, Integer user_id) {
@@ -44,6 +43,12 @@ public class ThumbServiceImpl implements ThumbService {
 		// 否则修改点赞状态为已点赞
 		thumb.setTh_state(EnumStateAll.thumbyes.getName());
 		thumbDAO.update(thumb);
+	}
+
+	@Override
+	public Map<Team, String> history(Integer user_id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

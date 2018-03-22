@@ -29,7 +29,7 @@ public class ThumbController {
 	@Resource(name="thumbService")
 	private ThumbService ts;
 	
-	@RequestMapping("thumb.do")
+	@RequestMapping("/thumb.do")
 	@ResponseBody
 	public Map<String, Object> thumb(HttpServletRequest request, HttpServletResponse response){
 		//从请求中获取队伍id和申请者id
