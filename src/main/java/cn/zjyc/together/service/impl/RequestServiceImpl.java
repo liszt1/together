@@ -1,5 +1,6 @@
 package cn.zjyc.together.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -15,6 +16,7 @@ import cn.zjyc.together.dao.ThumbDAO;
 import cn.zjyc.together.entity.Request;
 import cn.zjyc.together.entity.Team;
 import cn.zjyc.together.entity.Thumb;
+import cn.zjyc.together.entity.User;
 import cn.zjyc.together.service.AppException;
 import cn.zjyc.together.service.RequestService;
 import cn.zjyc.together.util.MapSwap;
@@ -101,6 +103,13 @@ public class RequestServiceImpl implements RequestService{
 		}
 		//成功申请,保存申请记录
 		requestDAO.save(team_id, user_id);
+	}
+	
+	@Override
+	public List<User> viewApplicant(Integer team_id) {
+		List<User> list = null;
+		list = requestDAO.findProposer(team_id);
+		return list;
 	}
 
 

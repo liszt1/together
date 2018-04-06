@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.zjyc.together.entity.Team;
+import cn.zjyc.together.entity.User;
 import cn.zjyc.together.service.AppException;
 import cn.zjyc.together.service.RequestService;
 import cn.zjyc.together.util.ConverterUtil;
@@ -256,5 +257,40 @@ public class RequestController {
 		return state;
 	}
 	
+
+
+		@RequestMapping("/viewApplicant.do")
+		@ResponseBody
+		public Map<String, Object> viewApplicant(HttpServletRequest request, HttpServletResponse response) {
+			// 从请求中获取队伍id和申请者id
+			Integer team_id = ConverterUtil.toInteger(request.getParameter("team_id"));
+
+			response.setContentType("text/json;charset=utf-8");
+			Map<String, Object> state = new HashMap<String, Object>();
+			List<User> list = null;
+			try {
+				list = requestSevice.viewApplicant(team_id);
+			} catch (Exception e) {
+				if(e instanceof AppException){
+					//应用异常，
+					//明确提示用户采取正确的操作
+					System.out.println(e.getMessage());
+					state.put("code", 1);
+					state.put("msg", e.getMessage());
+					return state;
+				}else {
+					//系统异常
+					//提示用户稍后重试
+					System.out.println("系统异常，提示用户稍后再试");
+					state.put("code", 1);
+					state.put("msg", "请稍后再试");
+					return state;
+				}
+			}
+			state.put("code", 0);
+			state.put("msg", "success");
+			state.put("data", list);
+			return state;
+		}
 	
 }

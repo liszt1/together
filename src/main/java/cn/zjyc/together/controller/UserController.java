@@ -35,6 +35,7 @@ public class UserController {
 	@RequestMapping("/register.do")
 	@ResponseBody
 	public Map<String, Object> register(HttpServletRequest request,HttpServletResponse response){
+		
 		//从请求中获取用户数据
 		String num = request.getParameter("num");
 		String user_pw = request.getParameter("user_pw");

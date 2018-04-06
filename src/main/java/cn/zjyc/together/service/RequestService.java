@@ -1,8 +1,10 @@
 package cn.zjyc.together.service;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.zjyc.together.entity.Team;
+import cn.zjyc.together.entity.User;
 
 public interface RequestService {
 
@@ -40,4 +42,12 @@ public interface RequestService {
 	 *            用户id
 	 */
 	public void joinTeam(Integer team_id, Integer user_id);
+	/**
+	 * 根据队伍id查看申请该队伍的用户信息列表
+	 * 
+	 * @param team_id
+	 *            队伍id
+	 * @return 用户信息列表
+	 */
+	public List<User> viewApplicant(Integer team_id);
 }
